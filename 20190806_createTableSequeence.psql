@@ -1,0 +1,38 @@
+create table seq_funcionario (
+id_func bigint,
+cpf varchar(11),
+nome varchar(40),
+ender varchar(30),
+cidade varchar(20),
+salario numeric (8,2),
+constraint pk_seq_funcionario primary key(id_func));
+
+create table seq_salario_registro (
+id_salreg bigint,
+id_func bigint,
+salario numeric(8,2),
+data_aumento date,
+constraint pk_seq_salario_registro  primary key(id_salreg),
+constraint fk_seq_salario_registro_seq_funcionario foreign key(id_func)
+			references seq_funcionario);
+create sequence sid_func;
+
+
+insert into seq_funcionario
+values (nextval('sid_func'), '4321', 'João da Silva', 'Rua das flores,78',
+				'Votuporanga', 65765.87);
+
+insert into seq_funcionario
+values (nextval('sid_func'), '4321', 'Maria da Silva', 'Rua das flores,78',
+				'Votuporanga', 65765.87);
+
+
+create sequence sid_salreg;
+
+insert into seq_salario_registro
+values (nextval('sid_salreg'), (select id_func from seq_funcionario
+				where cpf = '1234'), 
+			       (select salario from seq_funcionario
+				where cpf = '1234'),
+				current_date);
+
